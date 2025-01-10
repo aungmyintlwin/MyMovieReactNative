@@ -88,8 +88,8 @@ const topRatedMoves = async (): Promise<IPopularMovieResult> => {
   const data = await res.json();
   return data;
 };
-const fetchPopularTv = async (): Promise<IPopularMovieResult> => {
-  const res = await fetch(`${MOVIE_API_URL}/tv/popular`, {
+const upCommmingMoves = async (): Promise<IPopularMovieResult> => {
+  const res = await fetch(`${MOVIE_API_URL}/movie/upcoming`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${AUTH_TOKEN}`,
@@ -99,6 +99,17 @@ const fetchPopularTv = async (): Promise<IPopularMovieResult> => {
   const data = await res.json();
   return data;
 };
+// const fetchPopularTv = async (): Promise<IPopularMovieResult> => {
+//   const res = await fetch(`${MOVIE_API_URL}/tv/upcoming`, {
+//     method: "GET",
+//     headers: {
+//       Authorization: `Bearer ${AUTH_TOKEN}`,
+//     },
+//   });
+
+//   const data = await res.json();
+//   return data;
+// };
 
 function HomeScreen({navigation}: {navigation: any}) {
 
@@ -112,12 +123,12 @@ function HomeScreen({navigation}: {navigation: any}) {
   })
   const topRatedMoviesQuery = useQuery({
     queryKey: ['top-rated-movies'],
-    queryFn: nowPlayingMoves,
+    queryFn: topRatedMoves,
   })
 
-  const popularTvQuery = useQuery({
-    queryKey: ['popular-tv'],
-    queryFn: fetchPopularTv,
+  const upCommingMoviesQuery = useQuery({
+    queryKey: ['up-comming-movies'],
+    queryFn: upCommmingMoves,
   })
 
   return (
@@ -141,9 +152,9 @@ function HomeScreen({navigation}: {navigation: any}) {
               <List navigation={navigation} title="Top Rated Movies" content={topRatedMoviesQuery?.data?.results} />
             </View>
           ) : null}
-          {!popularTvQuery.isLoading && !popularTvQuery.error && popularTvQuery.isSuccess && popularTvQuery?.data?.results.length > 0 ? (
+          {!upCommingMoviesQuery.isLoading && !upCommingMoviesQuery.error && upCommingMoviesQuery.isSuccess && upCommingMoviesQuery?.data?.results.length > 0 ? (
             <View style={styles.carousel}>
-              <List navigation={navigation} title="Popular TV's" content={popularTvQuery?.data?.results} />
+              <List navigation={navigation} title="Up Comming Movies" content={upCommingMoviesQuery?.data?.results} />
             </View>
           ) : null}
         </ScrollView>

@@ -8,7 +8,7 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 
 import Icon from '@react-native-vector-icons/material-design-icons';
-import Home from "../screens/Home";
+import HomeStack from "./HomeStack";
 import Favourite from "../screens/Favourite";
 import History from "../screens/History";
 import RenderTabIcon from "./RenderTabIcon";
@@ -27,7 +27,7 @@ const AppFollow = () => {
         tabBarIcon: ({ focused, color, size }) => RenderTabIcon(route,focused,color,size),
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Favourite" component={Favourite} />
       <Tab.Screen name="History" component={History} />
     </Tab.Navigator>

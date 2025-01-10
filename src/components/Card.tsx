@@ -39,6 +39,7 @@ const Card = (props: ICardProps) => {
         <TouchableOpacity 
             style={styles.container}
             // onPress={() => navigation.navigate('Details', {id: item?.id})}
+            onPress={() => navigation.navigate('Home',{ screen: 'Details',params: {id: item?.id}})}
         >
             <Image source={
                 item.poster_path 
