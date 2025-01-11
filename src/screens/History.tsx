@@ -1,14 +1,29 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native';
 
-const History = () => {
+
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+  }
+});
+
+function History({navigation}: {navigation: any}) {
+
   return (
-    <View>
-      <Text>History</Text>
-    </View>
-  )
+    <SafeAreaView style={styles.container}>
+          <View>
+            <Text>History Screen</Text>
+          </View>
+    </ SafeAreaView>
+  );
 }
-
-export default History
-
-const styles = StyleSheet.create({})
+export default memo(History)

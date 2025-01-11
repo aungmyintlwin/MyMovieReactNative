@@ -1,6 +1,7 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  BackHandler,
   Dimensions,
   Image,
   Modal,
@@ -18,6 +19,9 @@ import { skipToken, useMutation, useQuery } from '@tanstack/react-query';
 import { scaleHeight, scaleWidth } from '../utils/responsive';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import Star from '../components/Star';
+import { IPopularMovieResult } from '../types/popularmovie.result.model';
+import { number } from 'prop-types';
+import Toast from 'react-native-toast-message';
 
 const height = Dimensions.get('screen').height;
 
@@ -109,13 +113,23 @@ const movieDetail = async (movieId: string): Promise<MovieDetail> => {
   const data = await res.json();
   return data;
 };
+const favouriteMovies = async (): Promise<IPopularMovieResult> => {
+  const res = await fetch(`${MOVIE_API_URL}/account/${ACCOUNT_ID}/favorite/movies`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${AUTH_TOKEN}`,
+    },
+  });
+
+  const data = await res.json();
+  return data;
+};
 type MovieFav = {
     media_id: number,
     media_type: string,
     favorite: boolean
   }
 const addFavMovie = async (paramData: MovieFav): Promise<MovieDetail> => {
-  console.log(paramData,'pdddd')
   const res = await fetch(`${MOVIE_API_URL}/account/${ACCOUNT_ID}/favorite`, {
     method: "POST",
     headers: {
@@ -133,7 +147,7 @@ const addFavMovie = async (paramData: MovieFav): Promise<MovieDetail> => {
  function DetailScreen({navigation, route}: IDetailScreenProps) {
   const {id} = route.params;
   const [modalVisible, setModalVisible] = useState(false);
-  const [movie, setMovie] = useState<MovieDetail>({} as MovieDetail);
+  const [favList,setFavList] = useState<number[]>([])
 
   const movieDetailQuery = useQuery({
     queryKey: ['movie-detail'],
@@ -142,36 +156,73 @@ const addFavMovie = async (paramData: MovieFav): Promise<MovieDetail> => {
     retry: 0
   })
   useEffect(() => {
-    if(movieDetailQuery?.isSuccess){
-      setMovie(movieDetailQuery?.data)
-    }
-  }, [id]);
+    const unsubscribe = navigation.addListener('focus', async() => {
+      movieDetailQuery?.refetch()
+    });
+    return unsubscribe;
+  }, [navigation,id]);
+
+  const backButtonHandler = useCallback(() => {
+    navigation.goBack()
+    return true;
+  }, []);
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backButtonHandler);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', backButtonHandler);
+    };
+  }, [backButtonHandler]);
 
   const movieMutation = useMutation({
     mutationFn: (data: MovieFav) => addFavMovie(data),
     onError: (error) => {
-      // An error happened!
-      // console.log(`err`,error?.status_message)
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        //@ts-ignore
+        text2: error?.status_message
+      });
     },
     onSuccess: (data) => {
-      // console.log(`err`,data?.status_message)
-      console.log(data,'success')
-      // Boom baby!
+      favouriteMoviesQuery.refetch()
+      if(favList.includes(id)){
+        let data = favList.filter(item => item !== id);
+        setFavList(data);
+      }else{
+        setFavList([...favList,id]);
+      }
+      Toast.show({
+        type: 'success',
+        text1: 'Favourite',
+        //@ts-ignore
+        text2: data?.status_message
+      });
     },
   })
-
+  const favouriteMoviesQuery = useQuery({
+    queryKey: ['favourite-movies'],
+    queryFn: favouriteMovies,
+  })
+  useEffect(() => {
+      //@ts-ignore
+      let favIds = [];
+      favouriteMoviesQuery?.data?.results.map(item => favIds.push(item?.id))
+      //@ts-ignore
+      favIds.length && setFavList(favIds)
+  }, [id]);
 
   return (
     <>
       {!movieDetailQuery?.isLoading && !movieDetailQuery?.isError && movieDetailQuery?.isSuccess ? (
         <View>
           {
-            movie && <>
+            movieDetailQuery?.data && <>
             <ScrollView>
               <Image
                 source={
-                  movie.poster_path
-                    ? {uri: `${MOVIE_IMAGE_URL}/${movie?.poster_path}`}
+                  movieDetailQuery?.data.poster_path
+                    ? {uri: `${MOVIE_IMAGE_URL}/${movieDetailQuery?.data?.poster_path}`}
                     : placeholderImage
                 }
                 style={styles.image}
@@ -179,30 +230,30 @@ const addFavMovie = async (paramData: MovieFav): Promise<MovieDetail> => {
               <View style={styles.container}>
                 <Icon 
                   onPress={() => {
-                    movieMutation.mutate({ media_id: id, media_type: "movie", favorite: true })
+                    movieMutation.mutate({ media_id: id, media_type: "movie", favorite: favList.includes(id) ? false : true })
                   }} 
                   style={styles.favButton} 
                   name={"heart"} 
                   size={scaleWidth(50)} 
-                  color={false ? "#900" : '#f4f4f4'}
+                  color={favList.includes(id) ? "gold" : '#f4f4f4'}
                 />
                 <View style={styles.playButton}>
                   <PlayButton setModalVisible={setModalVisible} />
                 </View>
-                <Text style={styles.title}>{movie.original_title}</Text>
-                {movie.genres && movie.genres.length > 0 ? (
+                <Text style={styles.title}>{movieDetailQuery?.data?.original_title}</Text>
+                {movieDetailQuery?.data?.genres && movieDetailQuery?.data?.genres.length > 0 ? (
                   <View style={styles.genresContainer}>
-                    {movie.genres.map(genre => (
+                    {movieDetailQuery?.data?.genres.map(genre => (
                       <Text key={genre.id} style={styles.genre}>
                         {genre.name}
                       </Text>
                     ))}
                   </View>
                 ) : null}
-                <Star stars={movie.vote_average / 2}/>
-                <Text style={styles.overview}>{movie.overview}</Text>
+                <Star stars={movieDetailQuery?.data?.vote_average / 2}/>
+                <Text style={styles.overview}>{movieDetailQuery?.data?.overview}</Text>
                 <Text style={styles.releaseDate}>{`Release date: ${dateFormat(
-                  movie.release_date,
+                  movieDetailQuery?.data?.release_date,
                   'dd/mm/yyyy',
                 )}`}</Text>
               </View>

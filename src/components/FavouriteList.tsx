@@ -22,19 +22,21 @@ const styles = StyleSheet.create({
 
 });
 
-const List = (props: IListProps) => {
+const FavouriteList = (props: IListProps) => {
   const {title, content, navigation} = props;
   return (
     <View style={styles.list}>
       <View>
         <Text style={styles.text}>{title}</Text>
       </View>
-      <View>
+      <View style={{flex: 1}}>
         <FlatList
           data={content}
-          horizontal={true}
+          numColumns={3}
+          horizontal={false}
           renderItem={({item}) => <Card navigation={navigation} item={item} />}
           keyExtractor={item => item.id.toString()}
+          ItemSeparatorComponent={() => <View style={{height: scaleHeight(10)}}/>}
         />
       </View>
     </View>
@@ -42,4 +44,4 @@ const List = (props: IListProps) => {
 }
 
 
-export default memo(List);
+export default memo(FavouriteList);

@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from "../screens/Home";
 import DetailScreen from "../screens/DetailScreen";
+import SearchResult from "../screens/SearchResult";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,8 +14,9 @@ const styles = StyleSheet.create({
 });
 
 type HomeStackParamList = {
-  HomeScreen: undefined;
-  Details: {id: number};
+  HomeScreen: undefined,
+  Details: {id: number},
+  SearchResult: {query: string}
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -33,6 +35,7 @@ export default function HomeStack() {
       <Stack.Navigator initialRouteName="HomeScreen" >
         <Stack.Screen name="HomeScreen" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="Details" component={DetailScreen} options={navigationOptions}/>
+        <Stack.Screen name="SearchResult" component={SearchResult} options={navigationOptions}/>
       </Stack.Navigator>
   )
 }
