@@ -1,5 +1,19 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/1.png?raw=true)
+
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/2.png?raw=true)
+
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/3.png?raw=true)
+
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/4.png?raw=true)
+
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/5.png?raw=true)
+
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/6.png?raw=true)
+
+![alt text](https://github.com/aungmyintlwin/MyMovieReactNative/blob/master/src/assets/images/screenshoot/7.png?raw=true)
+
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
