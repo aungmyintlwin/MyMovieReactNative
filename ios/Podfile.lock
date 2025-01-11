@@ -944,7 +944,7 @@ PODS:
   - React-Mapbuffer (0.73.11):
     - glog
     - React-debug
-  - react-native-safe-area-context (5.1.0):
+  - react-native-safe-area-context (4.14.1):
     - React-Core
   - react-native-vector-icons (11.0.0):
     - glog
@@ -1376,7 +1376,7 @@ SPEC CHECKSUMS:
   React-jsinspector: a98428936fb888cc15d857226a26d9ac0a668a0e
   React-logger: 6e4873d1f9c54cca30f6c91a6617f8c91b75ba4c
   React-Mapbuffer: 57bf49a458398d329dad2bf8bc660e3e35b96989
-  react-native-safe-area-context: e134b241010ebe2aacdcea013565963d13826faa
+  react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
   react-native-vector-icons: 31caad1faa2fedf366bf4c1ff2491b44c65fa586
   react-native-video: 1ac02d031065713c4f9b4aad35724bea3cc40a20
   React-nativeconfig: 8fd29a35a3e4e8c37682d976667663d834ba6165

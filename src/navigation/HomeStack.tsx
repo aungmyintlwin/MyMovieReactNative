@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { NativeStackNavigationOptions, createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from "../screens/Home";
 import DetailScreen from "../screens/DetailScreen";
@@ -22,17 +22,16 @@ type HomeStackParamList = {
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 const navigationOptions : NativeStackNavigationOptions = {
-  headerTransparent: true,
+  headerTransparent: Platform.OS === 'ios' ? true : false,
   headerTitleAlign: 'center',
   headerShadowVisible: false,
-  headerBackTitle: 'Back',
-
+  headerBackTitle: 'Back'
 }
 
 
 export default function HomeStack() {
   return (
-      <Stack.Navigator initialRouteName="HomeScreen" >
+      <Stack.Navigator initialRouteName="HomeScreen">
         <Stack.Screen name="HomeScreen" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="Details" component={DetailScreen} options={navigationOptions}/>
         <Stack.Screen name="SearchResult" component={SearchResult} options={navigationOptions}/>

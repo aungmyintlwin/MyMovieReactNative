@@ -30,7 +30,7 @@ interface ICardProps extends PropsWithChildren<any> {
     navigation: any;
 }
 
-const placeholderImage = require('../assets/images/placeholder.png');
+const placeholderImage = require('../assets/images/placeholder.jpeg');
 
 const Card = (props: ICardProps) => {
     const {item, navigation} = props;

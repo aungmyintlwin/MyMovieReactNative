@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
         fontSize: scaleWidth(18),
         fontWeight: 'bold',
         paddingBottom: scaleHeight(10),
-        marginLeft: scaleWidth(15)
+        marginLeft: scaleWidth(15),
+        color: '#292424'
     },
     list: {
         marginTop: scaleHeight(22),

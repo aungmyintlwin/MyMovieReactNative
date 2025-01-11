@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     textAlign: 'center',
     marginBottom: 10,
+    color: '#000'
   },
   genresContainer: {
     flexDirection: 'row',
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 5,
     backgroundColor: '#f44336',
-    color: 'white',
+    color: 'white'
   },
   overview: {
     padding: 10,
@@ -68,10 +69,13 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     marginBottom: 10,
+    color: 'gray',
+    textAlign: 'justify'
   },
   releaseDate: {
     fontWeight: 'bold',
     fontSize: 16,
+    color: '#000'
   },
   playButton: {
     padding: scaleHeight(10),
@@ -100,7 +104,7 @@ interface IDetailScreenProps {
   route: any;
 }
 
-const placeholderImage = require('../assets/images/placeholder.png');
+const placeholderImage = require('../assets/images/placeholder.jpeg');
 
 const movieDetail = async (movieId: string): Promise<MovieDetail> => {
   const res = await fetch(`${MOVIE_API_URL}/movie/${movieId}`, {

@@ -74,7 +74,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: scaleWidth(5),
     marginRight: scaleWidth(5),
-    padding: scaleWidth(5)
+    padding: scaleWidth(5),
+    color: '#000'
   },
 });
 
@@ -169,6 +170,7 @@ function HomeScreen({navigation}: {navigation: any}) {
               value={searchQuery}
               style={styles.search}
               placeholder='Enter Title or something...'
+              placeholderTextColor={'gray'}
             />
             <Pressable onPress={searchMovies}>
               <Icon
